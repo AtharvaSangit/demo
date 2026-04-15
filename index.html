@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    background: #121212; font-family: 'Arial', sans-serif;
+    color: white; overflow: hidden;
+  }
+
+  /* --- INPUT SCREEN --- */
+  #setup-screen {
+    height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: radial-gradient(circle, #2c3e50, #000000);
+    transition: transform 0.5s ease-out;
+  }
+
+  input {
+    padding: 15px; width: 300px; font-size: 1.2rem;
+    border-radius: 8px; border: none; outline: none;
+    margin-bottom: 20px; text-align: center;
+  }
+
+  button {
+    padding: 12px 30px; font-size: 1.1rem; cursor: pointer;
+    background: #00ffcc; color: #121212; border: none;
+    border-radius: 50px; font-weight: bold; transition: 0.3s;
+  }
+
+  button:hover { transform: scale(1.1); background: #fff; }
+
+  /* --- SHORTS FEED --- */
+  #shorts-feed {
+    display: none; /* Hidden until button is clicked */
+    height: 100vh; overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+  }
+
+  .card {
+    height: 100vh; width: 100%; scroll-snap-align: start;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .text-content { font-size: 3rem; font-weight: 900; text-align: center; padding: 40px; }
+
+  .counter {
+    position: absolute; top: 30px; left: 30px;
+    background: rgba(0,0,0,0.5); padding: 5px 15px;
+    border-radius: 20px; font-size: 1rem; color: #00ffcc;
+  }
+</style>
+</head>
+<body>
+
+  <div id="setup-screen">
+    <h1 style="margin-bottom: 30px;">Text-Shorts Creator</h1>
+    <input type="text" id="userInput" placeholder="Enter your message here..." maxlength="50">
+    <button onclick="startApp()">Start Scrolling</button>
+  </div>
+
+  <div id="shorts-feed"></div>
+
+<script>
+  function startApp() {
+    const text = document.getElementById('userInput').value || "Keep Scrolling!";
+    const setupScreen = document.getElementById('setup-screen');
+    const feed = document.getElementById('shorts-feed');
+
+    // 1. Clear any old feed and generate 100 new cards
+    feed.innerHTML = ''; 
+    for (let i = 1; i <= 100; i++) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      
+      // Dynamic background color logic
+      const hue = (i * 15) % 360; 
+      card.style.background = `linear-gradient(135deg, hsl(${hue}, 50%, 20%), #000)`;
+
+      card.innerHTML = `
+        <div class="counter">Short #${i} of 100</div>
+        <div class="text-content">${text}</div>
+      `;
+      feed.appendChild(card);
+    }
+
+    // 2. Transition UI
+    setupScreen.style.display = 'none';
+    feed.style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
